@@ -40,7 +40,7 @@
     <module name="RegexpHeader">
       <property
         name="header"
-        value="^$\n^\/\*\n \* Copyright \(C\) .*\. All rights reserved\.\n^ \*/"/>
+        value="^$\n^\/\*\n \* Copyright \(C\) .*\. All rights reserved\.\n^ \*\n^ \* \$Id.*\$\n^ \*/"/>
     </module>
 
     <!-- Checks for Size Violations.                    -->
