@@ -348,13 +348,6 @@
         </sequential>
     </macrodef>
 
-    <!-- SuSE version (OBSOLETE - do not use) -->
-    <macrodef uri="urn:org.dellroad.ant" name="suseversion">
-        <sequential>
-            <fail message="&lt;dellroad:suseversion&gt; has been replaced by &lt;dellroad:osname&gt; and &lt;dellroad:osrelease&gt;"/>
-        </sequential>
-    </macrodef>
-
     <!-- Check umask -->
     <macrodef uri="urn:org.dellroad.ant" name="checkumask">
         <attribute name="u" default="" description="Required user bits"/>
@@ -713,20 +706,12 @@
         <attribute name="repodir" default="/opt/repo/rpm" description="Base RPM repository directory"/>
         <attribute name="osname" default="" description="Repository O/S name (default current)"/>
         <attribute name="osrel" default="" description="Repository O/S release (default current)"/>
-        <attribute name="susever" default="" description="Repository openSuSE version (OBSOLETE - do not use)"/>
         <attribute name="purge" default="false" description="Whether to remove all other revisions from repository"/>
         <attribute name="pattern" default="*.rpm" description="Filename glob pattern"/>
         <sequential>
 
             <!-- Refuse to publish uncommitted code -->
             <dellroad:verifyclean/>
-
-            <!-- Check for obsolete usage -->
-            <fail message="ERROR: susever attribute has been replaced by by osname and osrel">
-                <condition>
-                    <length string="@{susever}" when="greater" length="0"/>
-                </condition>
-            </fail>
 
             <!-- Get repository O/S name and version -->
             <exec outputproperty="_rpmdist.osname.@{osname}" executable="/bin/sh" logError="true" failonerror="true">
@@ -858,17 +843,9 @@
     <macrodef uri="urn:org.dellroad.ant" name="rpminstall">
         <attribute name="osname" default="" description="Repository O/S name (default current)"/>
         <attribute name="osrel" default="" description="Repository O/S release (default current)"/>
-        <attribute name="susever" default="" description="Repository openSuSE version (OBSOLETE - do not use)"/>
         <attribute name="force" default="false" description="Whether to force installation (rpm --force)"/>
         <attribute name="pattern" default="*.rpm" description="Filename glob pattern"/>
         <sequential>
-
-            <!-- Check for obsolete usage -->
-            <fail message="ERROR: susever attribute has been replaced by by osname and osrel">
-                <condition>
-                    <length string="@{susever}" when="greater" length="0"/>
-                </condition>
-            </fail>
 
             <exec executable="/bin/bash" logError="true" failonerror="true">
                 <arg value="-c"/>
