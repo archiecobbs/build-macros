@@ -1243,8 +1243,8 @@
 -->
 
     <target name="clean" depends="clean-project" unless="clean.completed">
-        <delete dir="build"/>
-        <delete dir="dist"/>
+        <delete dir="build" followSymlinks="false" removeNotFollowedSymlinks="true"/>
+        <delete dir="dist" followSymlinks="false" removeNotFollowedSymlinks="true"/>
         <property name="clean.completed" value="true"/>
     </target>
     <target name="clean-project"/>
