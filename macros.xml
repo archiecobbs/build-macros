@@ -39,7 +39,17 @@
     <macrodef uri="urn:org.dellroad.ant" name="findantlib">
         <attribute name="property" description="Name of property to set"/>
         <attribute name="file" description="Name of library to look for"/>
+        <attribute name="envvar" description="Name of environment variable to try"/>
         <sequential>
+            <property environment="env"/>
+            <condition property="@{property}" value="${env.@{envvar}}">
+                <and>
+                    <not>
+                        <isset property="@{property}"/>
+                    </not>
+                    <available file="${env.@{envvar}}" type="file"/>
+                </and>
+            </condition>
             <condition property="@{property}" value="${data.dir}/java/@{file}">
                 <and>
                     <not>
@@ -64,7 +74,7 @@
                     <available file="/usr/share/java/ant/@{file}" type="file"/>
                 </and>
             </condition>
-            <fail message="ERROR: can't find @{file}; please install in ${data.dir}/java, ${ant.library.dir}, or /usr/share/java/ant/, or pass -D@{property}=... on the command line">
+            <fail message="ERROR: &#10;&#10;Can't find @{file}; please do one of the following:&#10;&#10;  o Install in ${data.dir}/java&#10;  o Install in ${ant.library.dir}&#10;  o Install in /usr/share/java/ant/&#10;  o Set environment variable @{envvar}&#10;  o Pass -D@{property}=... on the command line">
                 <condition>
                     <not>
                         <isset property="@{property}"/>
@@ -86,11 +96,11 @@
 -->
 
     <!-- Import ivy ant tasks -->
-    <dellroad:findantlib property="ivy.jar" file="ivy.jar"/>
+    <dellroad:findantlib property="ivy.jar" file="ivy.jar" envvar="IVY_JAR"/>
     <taskdef uri="urn:org.apache.ivy.ant" resource="org/apache/ivy/ant/antlib.xml" classpath="${ivy.jar}"/>
 
     <!-- Import ant-contrib ant tasks -->
-    <dellroad:findantlib property="ant-contrib.jar" file="ant-contrib.jar"/>
+    <dellroad:findantlib property="ant-contrib.jar" file="ant-contrib.jar" envvar="ANT_CONTRIB_JAR"/>
     <taskdef uri="urn:net.sf.antcontrib" resource="net/sf/antcontrib/antcontrib.properties" classpath="${ant-contrib.jar}"/>
 
     <!-- Get the sed(1) 'extended regular expression' flag for this O/S ('-E' for BSDish, '-r' for Linux) -->
@@ -120,7 +130,7 @@
         <attribute name="mod" description="Module module name"/>
         <attribute name="rev" description="Module revision"/>
         <attribute name="conf" default="default" description="Name of the ivy configuration to resolve"/>
-        <attribute name="type" default="jar" description="Type of artifact to resolve"/>
+        <attribute name="type" default="jar,bundle" description="Type of artifact to resolve"/>
         <attribute name="settingsRef" default="build-macros-ivy-settings" description="Reference to ivy settings"/>
         <attribute name="transitive" default="true" description="Whether to resolve dependencies transitively"/>
         <attribute name="log" default="download-only" description="When to log activity"/>
@@ -141,7 +151,7 @@
         <attribute name="pathid" description="Classpath reference id to define"/>
         <attribute name="ivyfile" default="${basedir}/src/ivy/ivy.xml" description="ivy.xml defining the named configuration"/>
         <attribute name="conf" description="Name of the ivy configuration to resolve"/>
-        <attribute name="type" default="jar" description="Type of artifact to resolve"/>
+        <attribute name="type" default="jar,bundle" description="Type of artifact to resolve"/>
         <attribute name="settingsRef" default="build-macros-ivy-settings" description="Reference to ivy settings"/>
         <attribute name="transitive" default="true" description="Whether to resolve dependencies transitively"/>
         <attribute name="log" default="download-only" description="When to log activity"/>
@@ -162,7 +172,7 @@
         <attribute name="setid" description="Fileset reference id to define"/>
         <attribute name="ivyfile" default="${basedir}/src/ivy/ivy.xml" description="ivy.xml defining the named configuration"/>
         <attribute name="conf" description="Name of the ivy configuration to resolve"/>
-        <attribute name="type" default="jar" description="Type of artifact to resolve"/>
+        <attribute name="type" default="jar,bundle" description="Type of artifact to resolve"/>
         <attribute name="settingsRef" default="build-macros-ivy-settings" description="Reference to ivy settings"/>
         <attribute name="transitive" default="true" description="Whether to resolve dependencies transitively"/>
         <attribute name="log" default="download-only" description="When to log activity"/>
@@ -182,7 +192,7 @@
         <attribute name="pattern" description="Ivy pattern for artifact destination"/>
         <attribute name="ivyfile" default="${basedir}/src/ivy/ivy.xml" description="ivy.xml defining the named configuration"/>
         <attribute name="conf" description="Name of the ivy configuration to resolve"/>
-        <attribute name="type" default="jar" description="Type of artifact to resolve"/>
+        <attribute name="type" default="jar,bundle" description="Type of artifact to resolve"/>
         <attribute name="settingsRef" default="build-macros-ivy-settings" description="Reference to ivy settings"/>
         <attribute name="transitive" default="true" description="Whether to resolve dependencies transitively"/>
         <attribute name="log" default="download-only" description="When to log activity"/>
@@ -204,7 +214,7 @@
         <attribute name="mod" description="Module module name"/>
         <attribute name="rev" description="Module revision"/>
         <attribute name="conf" default="default" description="Name of the ivy configuration to resolve"/>
-        <attribute name="type" default="jar" description="Type of artifact to resolve"/>
+        <attribute name="type" default="jar,bundle" description="Type of artifact to resolve"/>
         <attribute name="settingsRef" default="build-macros-ivy-settings" description="Reference to ivy settings"/>
         <attribute name="transitive" default="true" description="Whether to resolve dependencies transitively"/>
         <attribute name="log" default="download-only" description="When to log activity"/>
