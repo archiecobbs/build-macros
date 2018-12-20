@@ -101,7 +101,7 @@
 
     <!-- Import ant-contrib ant tasks -->
     <dellroad:findantlib property="ant-contrib.jar" file="ant-contrib.jar" envvar="ANT_CONTRIB_JAR"/>
-    <taskdef uri="urn:net.sf.antcontrib" resource="net/sf/antcontrib/antcontrib.properties" classpath="${ant-contrib.jar}"/>
+    <taskdef uri="urn:net.sf.antcontrib" resource="net/sf/antcontrib/antlib.xml" classpath="${ant-contrib.jar}"/>
 
     <!-- Get the sed(1) 'extended regular expression' flag for this O/S ('-E' for BSDish, '-r' for Linux) -->
     <exec outputproperty="sed.extended.flag" executable="/bin/sh" logError="true" failonerror="true">
