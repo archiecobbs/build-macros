@@ -120,7 +120,7 @@
         <attribute name="mod" description="Module module name"/>
         <attribute name="rev" description="Module revision"/>
         <attribute name="conf" default="default" description="Name of the ivy configuration to resolve"/>
-        <attribute name="type" default="jar" description="Type of artifact to resolve"/>
+        <attribute name="type" default="jar,bundle" description="Type of artifact to resolve"/>
         <attribute name="settingsRef" default="build-macros-ivy-settings" description="Reference to ivy settings"/>
         <attribute name="transitive" default="true" description="Whether to resolve dependencies transitively"/>
         <attribute name="log" default="download-only" description="When to log activity"/>
@@ -141,7 +141,7 @@
         <attribute name="pathid" description="Classpath reference id to define"/>
         <attribute name="ivyfile" default="${basedir}/src/ivy/ivy.xml" description="ivy.xml defining the named configuration"/>
         <attribute name="conf" description="Name of the ivy configuration to resolve"/>
-        <attribute name="type" default="jar" description="Type of artifact to resolve"/>
+        <attribute name="type" default="jar,bundle" description="Type of artifact to resolve"/>
         <attribute name="settingsRef" default="build-macros-ivy-settings" description="Reference to ivy settings"/>
         <attribute name="transitive" default="true" description="Whether to resolve dependencies transitively"/>
         <attribute name="log" default="download-only" description="When to log activity"/>
@@ -162,7 +162,7 @@
         <attribute name="setid" description="Fileset reference id to define"/>
         <attribute name="ivyfile" default="${basedir}/src/ivy/ivy.xml" description="ivy.xml defining the named configuration"/>
         <attribute name="conf" description="Name of the ivy configuration to resolve"/>
-        <attribute name="type" default="jar" description="Type of artifact to resolve"/>
+        <attribute name="type" default="jar,bundle" description="Type of artifact to resolve"/>
         <attribute name="settingsRef" default="build-macros-ivy-settings" description="Reference to ivy settings"/>
         <attribute name="transitive" default="true" description="Whether to resolve dependencies transitively"/>
         <attribute name="log" default="download-only" description="When to log activity"/>
@@ -182,7 +182,7 @@
         <attribute name="pattern" description="Ivy pattern for artifact destination"/>
         <attribute name="ivyfile" default="${basedir}/src/ivy/ivy.xml" description="ivy.xml defining the named configuration"/>
         <attribute name="conf" description="Name of the ivy configuration to resolve"/>
-        <attribute name="type" default="jar" description="Type of artifact to resolve"/>
+        <attribute name="type" default="jar,bundle" description="Type of artifact to resolve"/>
         <attribute name="settingsRef" default="build-macros-ivy-settings" description="Reference to ivy settings"/>
         <attribute name="transitive" default="true" description="Whether to resolve dependencies transitively"/>
         <attribute name="log" default="download-only" description="When to log activity"/>
@@ -204,7 +204,7 @@
         <attribute name="mod" description="Module module name"/>
         <attribute name="rev" description="Module revision"/>
         <attribute name="conf" default="default" description="Name of the ivy configuration to resolve"/>
-        <attribute name="type" default="jar" description="Type of artifact to resolve"/>
+        <attribute name="type" default="jar,bundle" description="Type of artifact to resolve"/>
         <attribute name="settingsRef" default="build-macros-ivy-settings" description="Reference to ivy settings"/>
         <attribute name="transitive" default="true" description="Whether to resolve dependencies transitively"/>
         <attribute name="log" default="download-only" description="When to log activity"/>
