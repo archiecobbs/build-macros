@@ -625,7 +625,7 @@
                 <bindingfileset dir="${basedir}">
                     <bindings/>
                 </bindingfileset>
-            </jibx:bind> 
+            </jibx:bind>
         </sequential>
     </macrodef>
 
@@ -760,26 +760,28 @@
                         <arg value="
                             set -e;
 
+                            NAME_REGEX='';
                             for FILE in `find dist/RPMS -type f -name '@{pattern}' -print`; do
                                 NAME=`rpm -qp --queryformat='%{name}\n' &quot;$${FILE}&quot;`;
-                                (
-                                    if [ -z '@{repohost}' -o '@{repohost}' = `hostname` ]; then
-                                        find '@{repodir}/${_rpmdist.osrel.@{osrel}}'
-                                            -type f -name &quot;$${NAME}-*.rpm&quot; -print0
-                                          | xargs -n 1 -0 -I@ sh -c
-                                            'test `rpm -qp --queryformat=&quot;%{name}&quot; &quot;@&quot;`
-                                              = &quot;'&quot;$${NAME}&quot;'&quot; &amp;&amp; echo &quot;@&quot;'
-                                          | xargs -n 1 -r -I@ sh -c 'echo @; rm @';
-                                    else
-                                        ssh '@{repohost}' find \''@{repodir}/${_rpmdist.osrel.@{osrel}}'\'
-                                            -type f -name \&quot;&quot;$${NAME}-*.rpm&quot;\&quot; -print0
-                                          \| xargs -n 1 -0 -I@ sh -c
-                                            \''test `rpm -qp --queryformat=&quot;%{name}&quot; &quot;@&quot;`
-                                              = &quot;'\''&quot;'&quot;$${NAME}&quot;'&quot;'\''&quot; &amp;&amp; echo &quot;@&quot;'\'
-                                          \| xargs -n 1 -r -I@ sh -c \''echo @; rm @'\';
-                                    fi;
-                                ) | sed ${sed.extended.flag} 's|^.*/([^/]+)$$|    \1|g';
+                                if ! [[ &quot;$${NAME}&quot; =~ ^[-_.[:alnum:]]+$$ ]]; then
+                                    echo &quot;Error: can't handle funky RPM name \&quot;$${NAME}\&quot;&quot; 1&gt;&amp;2;
+                                    exit 1;
+                                fi;
+                                if [ -n &quot;$${NAME_REGEX}&quot; ]; then
+                                    NAME_REGEX=&quot;$${NAME_REGEX}|&quot;;
+                                fi;
+                                NAME_REGEX=&quot;$${NAME_REGEX}$${NAME}&quot;;
                             done;
+                            REGEX=&quot;.*/($${NAME_REGEX})-[^/-]+-[^/-]+.rpm&quot;;
+                            (
+                                if [ -z '@{repohost}' -o '@{repohost}' = `hostname` ]; then
+                                    find '@{repodir}/${_rpmdist.osrel.@{osrel}}'
+                                        -type f -regextype posix-extended -regex &quot;$${REGEX}&quot; -delete -print;
+                                else
+                                    ssh '@{repohost}' find \''@{repodir}/${_rpmdist.osrel.@{osrel}}'\'
+                                        -type f -regextype posix-extended -regex \'&quot;$${REGEX}&quot;\' -delete -print;
+                                fi;
+                            ) | sed ${sed.extended.flag} 's|^.*/([^/]+)$$|    \1|g';
                         "/>
                     </exec>
                 </antcontrib:then>
